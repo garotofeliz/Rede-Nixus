@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌌 Rede Nixus</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(ellipse at top, #2d1b4e 0%, #1a0b2e 60%, #0f0620 100%);
+    min-height: 100vh;
+    color: #e8d5ff;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ===== ESTRELAS DE FUNDO ===== */
+  #estrelas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .estrela-fundo {
+    position: absolute;
+    color: #fff;
+    opacity: 0.4;
+    animation: piscarEstrela 3s ease-in-out infinite;
+  }
+
+  @keyframes piscarEstrela {
+    0%, 100% { opacity: 0.2; transform: scale(0.9); }
+    50% { opacity: 0.9; transform: scale(1.1); }
+  }
+
+  /* ===== CONTAINER PRINCIPAL ===== */
+  #app {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 20px 60px 20px;
+  }
+
+  /* ===== LOGO NIXUS ===== */
+  #logoWrap {
+    text-align: center;
+    padding: 20px 0 8px 0;
+  }
+
+  .logo-nixus {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: #c9a5ff;
+    letter-spacing: 2px;
+    text-shadow:
+      0 0 15px rgba(201, 165, 255, 0.9),
+      0 0 40px rgba(124, 58, 237, 0.6),
+      0 0 80px rgba(168, 85, 247, 0.4);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  }
+
+  .logo-nixus .letra {
+    display: inline-block;
+  }
+
+  .i-com-portal {
+    position: relative;
+    display: inline-block;
+    padding: 0 2px;
+  }
+
+  .estrela-topo {
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4rem;
+    color: #fde047;
+    filter: drop-shadow(0 0 10px #fde047);
+    animation: piscarEstrelaTopo 1.8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes piscarEstrelaTopo {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(0.85) rotate(-10deg); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.15) rotate(10deg); }
+  }
+
+  .portal-embaixo {
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 22px;
+    background: radial-gradient(ellipse at center, #c9a5ff 0%, #7c3aed 40%, transparent 75%);
+    border-radius: 50%;
+    filter: blur(3px);
+    animation: portalPulse 1.8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes portalPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+    50% { transform: translateX(-50%) scale(1.3); opacity: 1; }
+  }
+
+  /* ===== TÍTULO DA REDE ===== */
+  #tituloRede {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #b794f6;
+    letter-spacing: 4px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  #subtituloRede {
+    text-align: center;
+    font-size: 1rem;
+    color: #a58fd8;
+    font-style: italic;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== GRID DE CARDS ===== */
+  #gridJogos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 500px) {
+    #gridJogos {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .logo-nixus { font-size: 2.4rem; }
+    #tituloRede { font-size: 1.2rem; letter-spacing: 3px; }
+    .estrela-topo { top: -26px; font-size: 1rem; }
+    .portal-embaixo { width: 44px; height: 16px; bottom: -10px; }
+  }
+
+  .card {
+    background: linear-gradient(145deg, #2d1b4e 0%, #1e1230 100%);
+    border: 2px solid #4c2d7a;
+    border-radius: 20px;
+    padding: 20px 18px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 6px 0 rgba(0, 0, 0, 0.3),
+      0 10px 30px rgba(124, 58, 237, 0.15);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--corCard, #a855f7);
+    box-shadow: 0 0 20px var(--corCard, #a855f7);
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, var(--corCard, #a855f7) 0%, transparent 60%);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--corCard, #a855f7);
+    box-shadow:
+      0 10px 0 rgba(0, 0, 0, 0.3),
+      0 15px 40px var(--corCard, #a855f7);
+  }
+
+  .card:active {
+    transform: translateY(-2px) scale(0.99);
+  }
+
+  .card-emoji {
+    font-size: 3rem;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    line-height: 1;
+  }
+
+  .card-nome {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #f0e6ff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .card-tag {
+    font-size: 0.75rem;
+    color: #c9a5ff;
+    background: rgba(201, 165, 255, 0.15);
+    padding: 3px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    border: 1px solid rgba(201, 165, 255, 0.3);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== PÁGINA DE DETALHES ===== */
+  #paginaDetalhes {
+    display: none;
+    animation: fadeInUp 0.4s ease;
+  }
+
+  #paginaDetalhes.visivel {
+    display: block;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #btnVoltar {
+    background: transparent;
+    border: 2px solid #4c2d7a;
+    border-radius: 12px;
+    color: #c9a5ff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #btnVoltar:hover {
+    background: rgba(201, 165, 255, 0.1);
+    border-color: #7c3aed;
+  }
+
+  #btnVoltar:active {
+    transform: scale(0.96);
+  }
+
+  .detalhe-heroi {
+    text-align: center;
+    padding: 20px 0 24px 0;
+    border-bottom: 2px dashed #4c2d7a;
+    margin-bottom: 24px;
+  }
+
+  .detalhe-emoji {
+    font-size: 5rem;
+    line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px var(--corCard, #a855f7));
+  }
+
+  .detalhe-nome {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #f0e6ff;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px var(--corCard, #a855f7);
+  }
+
+  .detalhe-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    background: var(--corCard, #a855f7);
+    color: #1a0b2e;
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .info-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(76, 45, 122, 0.5);
+  }
+
+  .info-linha .rotulo {
+    font-weight: 700;
+    color: #a58fd8;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .info-linha .valor {
+    font-weight: 700;
+    color: #f0e6ff;
+    font-size: 0.95rem;
+    text-align: right;
+    max-width: 60%;
+  }
+
+  .info-bloco {
+    margin: 20px 0;
+  }
+
+  .info-bloco .rotulo {
+    font-weight: 700;
+    color: #a58fd8;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .info-bloco .valor-desc {
+    color: #e0d0ff;
+    font-size: 1rem;
+    line-height: 1.6;
+    background: rgba(76, 45, 122, 0.25);
+    padding: 16px;
+    border-radius: 14px;
+    border-left: 4px solid var(--corCard, #a855f7);
+  }
+
+  #btnJogar {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin-top: 24px;
+    background: linear-gradient(145deg, var(--corCard, #a855f7), #7c3aed);
+    color: #fff;
+    border: 3px solid #c9a5ff;
+    border-radius: 18px;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    box-shadow:
+      0 6px 0 rgba(0, 0, 0, 0.4),
+      0 10px 30px var(--corCard, #a855f7);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    text-align: center;
+  }
+
+  #btnJogar:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 9px 0 rgba(0, 0, 0, 0.4),
+      0 15px 40px var(--corCard, #a855f7);
+  }
+
+  #btnJogar:active {
+    transform: translateY(2px);
+    box-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.4),
+      0 4px 15px var(--corCard, #a855f7);
+  }
+
+  /* ===== RODAPÉ ===== */
+  #rodape {
+    text-align: center;
+    padding: 30px 0 20px 0;
+    font-size: 0.8rem;
+    color: #6b5796;
+    border-top: 2px dashed #2d1b4e;
+    margin-top: 40px;
+  }
+
+  #rodape .coracao {
+    color: #ec4899;
+    animation: pulsarCoracao 1.2s infinite;
+    display: inline-block;
+  }
+
+  @keyframes pulsarCoracao {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ESTRELAS DE FUNDO ===== -->
+<div id="estrelas"></div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+  <!-- ===== HOME ===== -->
+  <div id="paginaHome">
+    <div id="logoWrap">
+      <div class="logo-nixus">
+        <span class="letra">N</span>
+        <span class="letra i-com-portal">
+          <span class="estrela-topo">✦</span>
+          I
+          <span class="portal-embaixo"></span>
+        </span>
+        <span class="letra">X</span>
+        <span class="letra">U</span>
+        <span class="letra">S</span>
+      </div>
+    </div>
+
+    <div id="tituloRede">Rede Nixus</div>
+    <div id="subtituloRede">Todos os jogos aqui!</div>
+
+    <div id="gridJogos">
+      <!-- cards gerados pelo JS -->
+    </div>
+  </div>
+
+  <!-- ===== PÁGINA DE DETALHES ===== -->
+  <div id="paginaDetalhes">
+    <button id="btnVoltar" onclick="voltar()">← Voltar</button>
+
+    <div class="detalhe-heroi">
+      <div class="detalhe-emoji" id="detalheEmoji">🎮</div>
+      <div class="detalhe-nome" id="detalheNome">Nome</div>
+      <div class="detalhe-tag" id="detalheTag">Jogo</div>
+    </div>
+
+    <div class="info-linha">
+      <span class="rotulo">🎯 Classificação</span>
+      <span class="valor" id="detalheClassif">L</span>
+    </div>
+
+    <div class="info-linha">
+      <span class="rotulo">📅 Data de lançamento</span>
+      <span class="valor" id="detalheData">—</span>
+    </div>
+
+    <div class="info-linha">
+      <span class="rotulo">🎨 Universo</span>
+      <span class="valor" id="detalheUniverso">—</span>
+    </div>
+
+    <div class="info-bloco">
+      <span class="rotulo">📖 Descrição</span>
+      <div class="valor-desc" id="detalheDesc">—</div>
+    </div>
+
+    <a id="btnJogar" href="#">🎮 JOGAR</a>
+  </div>
+
+  <!-- ===== RODAPÉ ===== -->
+  <div id="rodape">
+    Feito com <span class="coracao">❤</span> pela Nixus<br>
+    © 2026 — Todos os universos reservados
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// DADOS DOS JOGOS
+// ============================================================
+const JOGOS = [
+  {
+    id: 'just-plant',
+    emoji: '🌱',
+    nome: 'Just Plants',
+    tag: 'Fazenda',
+    cor: '#22c55e',
+    classificacao: 'L (Livre)',
+    data: 'Sei lá kkkk',
+    universo: 'Fazenda',
+    descricao: 'Cuide da fazenda do pai do fazendeiro. Plante, colha, venda, cuide dos animais, contrate anjos e expanda o império agrícola da família. Uma história que acontece antes do nascimento do protagonista do Just Plant original.',
+    arquivo: 'just-plants.html'
+  },
+  {
+    id: 'jogo-senhas',
+    emoji: '🎭',
+    nome: 'Jogo das Senhas',
+    tag: 'Puzzle',
+    cor: '#a855f7',
+    classificacao: 'L (Livre)',
+    data: '2024',
+    universo: 'Liga Password',
+    descricao: 'Digite senhas e descubra segredos obscuros. Cada palavra esconde algo... e o narrador sabe mais do que devia. Um puzzle filosófico sobre memória, liberdade e cópias digitais.',
+    arquivo: 'jogo-das-senhas.html'
+  },
+  {
+    id: 'ache-gatos',
+    emoji: '🐱',
+    nome: 'Ache os Gatos',
+    tag: 'Lógica',
+    cor: '#ff6b9d',
+    classificacao: 'L (Livre)',
+    data: '2026',
+    universo: 'Felino',
+    descricao: 'Encontre todos os gatinhos escondidos antes do tempo acabar. Cuidado com a bomba do bem! Multiplayer local, loja, 34 conquistas, easter eggs e um narrador gato que odeia quando você não joga.',
+    arquivo: 'ache-os-gatos.html'
+  },
+  {
+    id: 'arraste-venca',
+    emoji: '🟡',
+    nome: 'Arraste e Vença',
+    tag: 'Palavras',
+    cor: '#fbbf24',
+    classificacao: 'L (Livre)',
+    data: 'Em breve',
+    universo: 'Palavras',
+    descricao: 'Arraste as letras e forme palavras cruzadas. 8 fases temáticas: do clássico AMOR aos animais, países, frutas e profissões. Sem dicas. Sem pressa. Só você e as letras.',
+    arquivo: 'arraste-e-venca.html'
+  }
+];
+
+// ============================================================
+// GERAR ESTRELAS DE FUNDO
+// ============================================================
+function gerarEstrelas() {
+  const el = document.getElementById('estrelas');
+  el.innerHTML = '';
+  const total = 60;
+  for (let i = 0; i < total; i++) {
+    const s = document.createElement('div');
+    s.className = 'estrela-fundo';
+    s.textContent = Math.random() > 0.5 ? '✦' : '·';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.fontSize = (0.5 + Math.random() * 1.2) + 'rem';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    el.appendChild(s);
+  }
+}
+
+// ============================================================
+// RENDERIZAR CARDS
+// ============================================================
+function renderizarCards() {
+  const grid = document.getElementById('gridJogos');
+  grid.innerHTML = '';
+
+  JOGOS.forEach(jogo => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--corCard', jogo.cor);
+    card.innerHTML = `
+      <div class="card-emoji">${jogo.emoji}</div>
+      <div class="card-nome">${jogo.nome}</div>
+      <div class="card-tag">${jogo.tag}</div>
+    `;
+    card.onclick = () => abrirDetalhes(jogo);
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// ABRIR DETALHES
+// ============================================================
+function abrirDetalhes(jogo) {
+  document.getElementById('paginaHome').style.display = 'none';
+  document.getElementById('paginaDetalhes').classList.add('visivel');
+
+  document.getElementById('detalheEmoji').textContent = jogo.emoji;
+  document.getElementById('detalheNome').textContent = jogo.nome;
+  document.getElementById('detalheTag').textContent = jogo.tag;
+  document.getElementById('detalheClassif').textContent = jogo.classificacao;
+  document.getElementById('detalheData').textContent = jogo.data;
+  document.getElementById('detalheUniverso').textContent = jogo.universo;
+  document.getElementById('detalheDesc').textContent = jogo.descricao;
+
+  // Aplica cor do jogo na página
+  const det = document.getElementById('paginaDetalhes');
+  det.style.setProperty('--corCard', jogo.cor);
+
+  // Botão Jogar
+  const btn = document.getElementById('btnJogar');
+  btn.href = jogo.arquivo;
+
+  // Scroll pro topo
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// VOLTAR
+// ============================================================
+function voltar() {
+  document.getElementById('paginaDetalhes').classList.remove('visivel');
+  document.getElementById('paginaHome').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// INICIAR
+// ============================================================
+gerarEstrelas();
+renderizarCards();
+</script>
+
+</body>
+  </html>
